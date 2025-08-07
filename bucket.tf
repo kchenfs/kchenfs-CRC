@@ -1,4 +1,4 @@
- S3 bucket for static website hosting
+#S3 bucket for static website hosting
 resource "aws_s3_bucket" "website" {
   bucket        = "static-website-bucket-resources-ken"
   force_destroy = true
@@ -187,34 +187,3 @@ output "cloudfront_distribution_id" {
   value       = aws_cloudfront_distribution.website.id
 }
 
-# Optional: Route53 records (if you want to manage DNS in AWS)
-# Uncomment and modify if you transfer DNS from Cloudflare to Route53
-/*
-resource "aws_route53_zone" "main" {
-  name = "kchenfs.com"
-}
-
-resource "aws_route53_record" "root" {
-  zone_id = aws_route53_zone.main.zone_id
-  name    = "kchenfs.com"
-  type    = "A"
-
-  alias {
-    name                   = aws_cloudfront_distribution.website.domain_name
-    zone_id                = aws_cloudfront_distribution.website.hosted_zone_id
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "www" {
-  zone_id = aws_route53_zone.main.zone_id
-  name    = "www.kchenfs.com"
-  type    = "A"
-
-  alias {
-    name                   = aws_cloudfront_distribution.website.domain_name
-    zone_id                = aws_cloudfront_distribution.website.hosted_zone_id
-    evaluate_target_health = false
-  }
-}
-*/
