@@ -1,7 +1,7 @@
 Cloud Resume Challenge - Ken Chen
 This repository contains the source code and infrastructure-as-code for my personal resume website, built as part of the Cloud Resume Challenge. The website is a static single-page application hosted on AWS, featuring a serverless backend to track page visitors. The entire infrastructure is defined using Terraform and deployed automatically via a CI/CD pipeline with GitHub Actions.
 
-Live Site: kchenfs.com (or your domain)
+Live Site: kchenfs.com 
 
 Architecture Diagram
 The project follows a modern serverless architecture, ensuring high availability, scalability, and cost-efficiency.
