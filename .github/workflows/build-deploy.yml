@@ -1,60 +1,38 @@
-name: Update ECS Fargate
+name: Deploy Static Website
 
 on:
   push:
     branches:
-      - master # Trigger this workflow on pushes to the main branch
+      - master
 
 jobs:
-  build-and-deploy:
+  deploy-static-site:
     runs-on: ubuntu-latest
 
     steps:
+
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up AWS CLI
-      uses: aws-actions/configure-aws-credentials@v1
+    # --- AWS AUTH VIA OIDC ---
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
+        role-to-assume: ${{ secrets.AWS_IAM_ROLE_FOR_OIDC_ARN }}
+        aws-region: ca-central-1
 
-    - name: Authenticate with ECR
+    # --- UPLOAD STATIC WEBSITE TO S3 ---
+    - name: Upload static site to S3
       run: |
-        # Authenticate Docker with your AWS account
-        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+        echo "Uploading WebsiteTemplate/ to S3..."
+        aws s3 sync WebsiteTemplate/ s3://static-website-bucket-resources-ken/ --delete
+        echo "Static site upload complete."
 
-    - name: Build Docker Image
+    # --- CLOUDFRONT INVALIDATION ---
+    - name: Invalidate CloudFront Cache
       run: |
-        pwd
-        ls -al
-        # Build your Docker image here
-        docker build -t my-website-image:latest .
-        echo "Successfully built the docker image"
-
-    - name: Tag Docker Image
-      run: |
-        # Tag the Docker image with the ECR repository URL
-        docker tag my-website-image:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/container-repo:latest
-        echo "successfully tag the docker image"
-
-    - name: Push Docker Image to AWS ECR
-      run: |
-        # Push the Docker image to ECR
-        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/container-repo:latest
-        echo "successfully push the docker image"
-
-    - name: Update ECS/Fargate Service
-      run: |
-        aws ecs update-service --cluster kchenfs-cluster --service kchenfs-service --force-new-deployment
-        echo "ecs service upgraded"
-
-    - name: Deploy Lambda Function
-      run: |
-        pwd
-        ls -l
-        echo "Zipping artifacts and pushing to S3..."
-        zip lambda_function.zip WebsiteCounter.py
-        aws s3 cp ./lambda_function.zip s3://kencfswebsite/
-        aws lambda update-function-code --function-name "WebsiteCounterLambda" --s3-bucket "kencfswebsite" --s3-key "lambda_function.zip"
+        echo "Invalidating CloudFront index.html..."
+        aws cloudfront create-invalidation \
+          --distribution-id E2V9OOLD45N8XO \
+          --paths "/index.html"
+        echo "Invalidation complete."
