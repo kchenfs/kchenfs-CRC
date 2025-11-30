@@ -1,59 +1,43 @@
-Cloud Resume Challenge - Ken Chen
-This repository contains the source code and infrastructure-as-code for my personal resume website, built as part of the Cloud Resume Challenge. The website is a static single-page application hosted on AWS, featuring a serverless backend to track page visitors. The entire infrastructure is defined using Terraform and deployed automatically via a CI/CD pipeline with GitHub Actions.
+# ☁️ Cloud Resume Challenge - Ken Chen
 
-Live Site: kchenfs.com 
+![Build Status](https://img.shields.io/github/actions/workflow/status/kchenfs/cloud-resume/build-deploy.yml?style=flat-square&logo=github-actions)
+![Terraform](https://img.shields.io/badge/Terraform-v1.9+-purple?style=flat-square&logo=terraform)
+![AWS](https://img.shields.io/badge/AWS-Serverless-orange?style=flat-square&logo=amazon-aws)
 
-Architecture Diagram
-The project follows a modern serverless architecture, ensuring high availability, scalability, and cost-efficiency.
+> **Live Site:** [kchenfs.com](https://kchenfs.com)
 
-Frontend Hosting: The static website (HTML, CSS, JS) is hosted in an Amazon S3 bucket, configured for public website hosting.
+This repository contains the source code and Infrastructure-as-Code (IaC) for my personal resume website. Built as part of the **Cloud Resume Challenge**, this project demonstrates a full-stack serverless application deployed via a CI/CD pipeline.
 
-Content Delivery & Security: An Amazon CloudFront distribution sits in front of the S3 bucket. This acts as a Content Delivery Network (CDN) to cache the site at edge locations globally for low-latency access and provides HTTPS security.
+---
 
-Backend API: The visitor counter functionality is exposed through an Amazon API Gateway REST API.
+## 🏗️ Architecture
 
-Serverless Compute: The API Gateway triggers an AWS Lambda function written in Python.
+This project leverages a modern **Serverless Architecture** on AWS to ensure high availability, zero server management, and cost efficiency.
 
-Database: The Lambda function reads and increments a counter value stored in an Amazon DynamoDB table, a NoSQL database.
 
-CI/CD: The entire deployment process is automated using GitHub Actions. When code is pushed to the main branch, the workflow automatically deploys the frontend files to S3 and the backend code to Lambda.
 
-Technology Stack
-Frontend
-HTML5
+[Image of AWS serverless architecture diagram with Lambda and API Gateway]
 
-Tailwind CSS: For modern and responsive styling.
 
-JavaScript: To handle the dynamic visitor counter API call.
+### Data Flow
+1.  **Client:** User visits `kchenfs.com`.
+2.  **CDN & Caching:** **Amazon CloudFront** serves the static content from edge locations globally, enforcing HTTPS.
+3.  **Frontend:** Static assets (HTML, CSS, JS) are hosted in an **Amazon S3** bucket.
+4.  **API Call:** The JavaScript on the frontend calls an **API Gateway** endpoint to fetch visitor stats.
+5.  **Compute:** API Gateway triggers an **AWS Lambda** function (Python).
+6.  **Persistence:** Lambda reads/writes the atomic counter to **Amazon DynamoDB**.
 
-Backend (Serverless)
-AWS Lambda: Executes the Python code for the visitor counter logic.
+---
 
-Amazon API Gateway: Provides the HTTP endpoint for the Lambda function.
+## 🛠️ Technology Stack
 
-Amazon DynamoDB: A NoSQL database used to store and manage the visitor count.
+| Category | Technology | Usage |
+|----------|------------|-------|
+| **Frontend** | HTML5, Tailwind CSS, JS | Responsive UI and dynamic API integration. |
+| **Compute** | AWS Lambda (Python) | Serverless backend logic for the visitor counter. |
+| **Database** | Amazon DynamoDB | NoSQL database for state management. |
+| **Networking** | CloudFront, API Gateway, Route53 | CDN, API management, and DNS. |
+| **IaC** | Terraform | Declarative infrastructure provisioning. |
+| **CI/CD** | GitHub Actions | Automated testing and deployment pipeline. |
 
-Cloud Infrastructure & Hosting
-Amazon S3 (Simple Storage Service): Stores the static website files.
-
-Amazon CloudFront: Serves as the CDN for fast content delivery and SSL/TLS encryption.
-
-AWS IAM (Identity and Access Management): Manages permissions for AWS services to interact securely.
-
-Infrastructure as Code (IaC) & DevOps
-Terraform: Defines and provisions all AWS resources in a declarative, version-controlled manner.
-
-GitHub Actions: Automates the build and deployment process (CI/CD).
-
-CI/CD Pipeline (build-deploy.yml)
-The deployment process is fully automated using GitHub Actions. A push to the main branch triggers the following workflow:
-
-Checkout Code: The repository code is checked out.
-
-Configure AWS Credentials: Securely authenticates with AWS using secrets stored in GitHub.
-
-Deploy Frontend: The workflow syncs the local website files (HTML, CSS, JS) with the S3 bucket.
-
-Deploy Backend: The Python script for the visitor counter is zipped and deployed to the AWS Lambda function.
-
-Invalidate CloudFront Cache: A cache invalidation is created in CloudFront to ensure users immediately see the latest version of the website.
+---
