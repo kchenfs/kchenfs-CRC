@@ -275,7 +275,22 @@
                     
                     <div class="border-l-2 border-green-500 pl-4 relative">
                         <div class="absolute -left-[9px] top-0 w-4 h-4 bg-gray-900 border-2 border-green-500 rounded-full"></div>
-                        <span class="text-green-400 font-bold">2025-11-29</span>
+                        <span class="text-green-400 font-bold">2025-11-30</span>
+                        <h4 class="text-white text-lg mt-1">Refining Observability: LGTM Stack & Nginx Tracing</h4>
+                        <p class="text-gray-400 mt-1">
+                            Migrated TableTap observability to a full LGTM stack. Standardized on Grafana Alloy for a unified "Push" architecture over a secure Tailscale mesh network. 
+                            Solved static frontend tracing issues by swapping to the <code>nginx-otel</code> image to enable OpenTelemetry propagation.
+                        </p>
+                        <div class="mt-2 flex gap-2">
+                            <span class="bg-gray-700 text-xs px-2 py-1 rounded">Grafana Alloy</span>
+                            <span class="bg-gray-700 text-xs px-2 py-1 rounded">OpenTelemetry</span>
+                            <span class="bg-gray-700 text-xs px-2 py-1 rounded">Tailscale</span>
+                        </div>
+                    </div>
+
+                    <div class="border-l-2 border-blue-500 pl-4 relative">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 bg-gray-900 border-2 border-blue-500 rounded-full"></div>
+                        <span class="text-blue-400 font-bold">2025-11-29</span>
                         <h4 class="text-white text-lg mt-1">Implemented SRE Golden Signals</h4>
                         <p class="text-gray-400 mt-1">
                             Configured Promtail and Loki to ingest logs from the PHP application container. 
