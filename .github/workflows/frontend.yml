@@ -5,7 +5,7 @@ on:
     branches:
       - master  # Only runs on push to feature1 branch
     paths:
-      - 'frontend/**'  # Only trigger when files in frontend directory change
+      - 'frontend/*'  # Only trigger when files in frontend directory change
 
 jobs:
   deploy:
