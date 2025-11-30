@@ -5,15 +5,13 @@ on:
     branches:
       - master  # Only runs on push to feature1 branch
     paths:
-      - 'frontend/*'  # Only trigger when files in frontend directory change
+      - 'frontend/**'  # Only trigger when files in frontend directory change
 
 jobs:
   deploy:
     name: Deploy to S3
     runs-on: ubuntu-latest
-    
-    # Only run deployment on push to feature1 branch
-    if: github.event_name == 'push' && github.ref == 'refs/heads/feature1'
+  
     
     steps:
       - name: Checkout code

@@ -5,7 +5,7 @@ on:
     branches:
       - master  # Only runs on push to feature1 branch
     paths:
-      - 'backend/*'  # Only trigger when backend code changes
+      - 'backend/**'  # Only trigger when backend code changes
 
 env:
   PYTHON_VERSION: '3.11'  # Change to your Lambda runtime version
