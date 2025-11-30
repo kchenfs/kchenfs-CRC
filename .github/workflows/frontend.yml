@@ -3,7 +3,7 @@ name: Deploy Frontend to S3
 on:
   push:
     branches:
-      - feature1  # Only runs on push to feature1 branch
+      - master  # Only runs on push to feature1 branch
     paths:
       - 'frontend/**'  # Only trigger when files in frontend directory change
 

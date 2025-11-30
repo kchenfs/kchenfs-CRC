@@ -3,7 +3,7 @@ name: Lambda CI/CD Pipeline
 on:
   push:
     branches:
-      - feature1  # Only runs on push to feature1 branch
+      - master  # Only runs on push to feature1 branch
     paths:
       - 'backend/**'  # Only trigger when backend code changes
 
